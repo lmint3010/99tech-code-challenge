@@ -1,11 +1,28 @@
 import { CurrencySwapForm } from "@/components/currency-swap-form";
+import { cn } from "@/utils/cn";
 import type { FC } from "react";
 
 export const HomePage: FC = () => {
 	return (
 		<div className="w-screen h-screen grid place-items-center bg-primary-background">
-			<h1>Swap whenever and whereever works best for you</h1>
-			<CurrencySwapForm availableAmount={1_000_000} />
+			<div className="flex flex-col items-center">
+				<div className={
+					cn(
+						"px-12 py-1 inline-block font-medium tracking-wider",
+						"uppercase text-indigo-700 text-sm mb-6",
+					)
+				}>
+					Seamless currency exchange
+				</div>
+				<h1 className="text-4xl leading-tight font-medium text-center mb-12">
+					<span className="text-gray-700">Swap whenever and whereever</span>
+					<br />
+					<span className="bg-gradient-to-r from-indigo-600 to-primary-foreground bg-clip-text text-transparent">
+						works best for you
+					</span>
+				</h1>
+				<CurrencySwapForm availableAmount={1_000_000} />
+			</div>
 		</div>
 	);
 };
