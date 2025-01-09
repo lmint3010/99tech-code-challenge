@@ -19,13 +19,13 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = ({
 				<div className="bg-primary-backgroundLight rounded-lg py-4 px-6 flex flex-col gap-2">
 					<label
 						htmlFor="input-amount"
-						className="text-sm font-semibold text-indigo-700 cursor-pointer"
+						className="text-sm font-medium text-indigo-700 cursor-pointer"
 					>
 						Amount
 					</label>
 					<CurrencyInput id="input-amount" />
-					<div className="flex items-center gap-1.5 text-sm">
-						<span className="font-light text-gray-600 text-xs">Available</span>
+					<div className="flex items-end gap-1.5 text-sm">
+						<span className="text-gray-600 text-xs">Available</span>
 						<span className="font-semibold text-gray-800">
 							{formatNumber(availableAmount)}
 						</span>
@@ -44,17 +44,17 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = ({
 				<div className="bg-primary-backgroundLight rounded-lg py-4 px-6 flex flex-col gap-2">
 					<label
 						htmlFor="output-amount"
-						className="text-sm font-semibold text-indigo-700 cursor-pointer"
+						className="text-sm font-medium text-indigo-700 cursor-pointer"
 					>
 						Get
 					</label>
-					<CurrencyInput id="output-amount" />
+					<CurrencyInput id="output-amount" value={123_000} readonly />
 					<div className="flex items-center gap-1.5 text-sm">
-						<span className="font-light text-gray-600 text-xs">
+						<span className="text-gray-600 text-xs leading-tight">
 							Estimated Fee
 						</span>
 						<span className="font-semibold text-gray-800">
-							{formatNumber(0.0)}
+							{formatNumber(0)}
 						</span>
 					</div>
 				</div>

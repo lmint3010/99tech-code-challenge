@@ -1,17 +1,47 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
 import { formatNumber } from "@/utils/format";
+import { cn } from "@/utils/cn";
+
+const INVALID_MASK_VALUE_CHARS = /[^0-9.,]/g;
+const NON_NUMERIC_REGEX = /[^0-9.]/g;
+const NUMBER_SEPARATOR_REGEX = /[.,]/g;
 
 export type CurrencyInputProps = {
 	id?: string;
+	readonly?: boolean;
+	value?: number;
 	onChange?: (value: number) => void;
 };
 
-const INVALID_MASK_VALUE_CHARS = /[^0-9\.\,]/g;
-const NON_NUMERIC_REGEX = /[^0-9\.]/g;
+export const CurrencyInput: FC<CurrencyInputProps> = ({
+	id,
+	readonly,
+	value,
+	onChange,
+}) => {
+	const [maskValue, setMaskValue] = useState(value ? formatNumber(value) : "");
 
-export const CurrencyInput: FC<CurrencyInputProps> = ({ id, onChange }) => {
-	const [maskValue, setMaskValue] = useState("");
+	useEffect(() => {
+		if (value === undefined) {
+			return;
+		}
+
+		const updateMaskValue = () => {
+			const formattedValue = formatNumber(value);
+			const hasSeparatorInMask = NUMBER_SEPARATOR_REGEX.test(maskValue);
+
+			setMaskValue(
+				hasSeparatorInMask
+					? formattedValue
+					: formattedValue.replace(NUMBER_SEPARATOR_REGEX, ""),
+			);
+		};
+
+		updateMaskValue();
+
+		return () => setMaskValue("");
+	}, [value]);
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const inputValue = event.target.value;
@@ -31,7 +61,6 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({ id, onChange }) => {
 		}
 
 		const numericValue = Number(inputValue.replace(NON_NUMERIC_REGEX, ""));
-
 		const formattedValue = formatNumber(numericValue);
 		setMaskValue(formattedValue);
 	};
@@ -44,8 +73,14 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({ id, onChange }) => {
 			value={maskValue}
 			onChange={handleInputChange}
 			onBlur={handleInputBlur}
-			className="appearance-none bg-transparent w-full text-3xl text-gray-800 outline-none"
-			placeholder="0"
+			className={cn(
+				"appearance-none bg-transparent w-full",
+				"text-3xl font-semibold text-gray-800",
+				"outline-none placeholder:text-gray-300",
+				"tracking-wider",
+			)}
+			placeholder="Enter amount"
+			readOnly={readonly}
 		/>
 	);
 };
