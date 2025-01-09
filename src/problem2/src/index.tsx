@@ -1,14 +1,13 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 
-import { CurrencySwapForm } from "@/currency-swap-form";
+import { HomePage } from "@/pages/home";
 
 const container = document.getElementById("react-app");
 
 if (!container) {
-  throw new Error("Container not found");
+	throw new Error("Container not found");
 }
 
 const root = createRoot(container);
 
-root.render(<CurrencySwapForm />);
+root.render(<HomePage />);
