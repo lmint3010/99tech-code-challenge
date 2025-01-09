@@ -5,6 +5,7 @@ import { formatNumber } from "@/utils/format";
 
 import SwapIcon from "@/assets/icons/swap.svg";
 import { cn } from "@/utils/cn";
+import { CurrencySelect } from "@/components/currency-select";
 
 export type CurrencySwapFormProps = {
 	availableAmount: number;
@@ -24,6 +25,7 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = ({
 						Amount
 					</label>
 					<CurrencyInput id="input-amount" />
+					<CurrencySelect />
 					<div className="flex items-end gap-1.5 text-sm">
 						<span className="text-gray-600 text-xs">Available</span>
 						<span className="font-semibold text-gray-800">

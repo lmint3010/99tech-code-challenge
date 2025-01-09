@@ -1,14 +1,9 @@
 import type { FC } from "react";
 
-import useSWR from "swr";
 
-import { GLOBAL_SWR_KEYS } from "@/constants/swr-keys";
 import { CurrencySwapForm } from "@/components/currency-swap-form";
-import { fetchCoinList } from "@/api/fetch-coin-list";
 
 export const HomePage: FC = () => {
-	useSWR(GLOBAL_SWR_KEYS.COIN_LIST, fetchCoinList);
-
 	return (
 		<div className="w-screen h-screen grid place-items-center bg-primary-background">
 			<div className="flex flex-col items-center">

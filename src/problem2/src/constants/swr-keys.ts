@@ -1,3 +1,3 @@
-export const GLOBAL_SWR_KEYS = {
+export const SWR_CACHE_KEYS = {
 	COIN_LIST: "coinList",
 };
