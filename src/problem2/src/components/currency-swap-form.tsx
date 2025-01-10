@@ -16,8 +16,8 @@ export type CurrencySwapFormProps = object;
 export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 	const [queryStates, setQueryStates] = useQueryStates({
 		originAmount: parseAsFloat,
-		originCoin: parseAsString,
-		destinationCoin: parseAsString,
+		originCoinId: parseAsString,
+		destinationCoinId: parseAsString,
 	});
 
 	const userBalance = useUserBalance();
@@ -28,8 +28,8 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 		),
 		defaultValues: {
 			originAmount: queryStates.originAmount ?? undefined,
-			originCoin: queryStates.originCoin ?? '',
-			destinationCoin: queryStates.destinationCoin ?? '',
+			originCoinId: queryStates.originCoinId ?? '',
+			destinationCoinId: queryStates.destinationCoinId ?? '',
 		},
 	});
 
@@ -37,7 +37,12 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 
 	useEffect(() => {
 		const { unsubscribe } = watch(
-			(value) => setQueryStates(value)
+			(value) => {
+				setQueryStates({
+					...value,
+					originAmount: value.originAmount ?? null
+				});
+			}
 		);
 
 		return () => unsubscribe();

@@ -14,6 +14,6 @@ export const getCurrencySwapFormSchema = ({ maxAmount = Number.MAX_VALUE }) =>
 			.max(maxAmount, {
 				message: `Please enter a value less than ${formatNumber(maxAmount)}`,
 			}),
-		originCoin: z.string().nonempty({ message: "Please select currency" }),
-		destinationCoin: z.string().nonempty({ message: "Please select currency" }),
+		originCoinId: z.string().nonempty({ message: "Please select currency" }),
+		destinationCoinId: z.string().nonempty({ message: "Please select currency" }),
 	});

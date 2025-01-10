@@ -40,14 +40,14 @@ export const OriginFieldGroup: FC<OriginFieldGroupProps> = () => {
               />
               <div className="flex flex-col font-light text-sm gap-1 text-red-700">
                 <span>{errors.originAmount?.message}</span>
-                <span>{errors.originCoin?.message}</span>
+                <span>{errors.originCoinId?.message}</span>
               </div>
             </>
           )}
         />
         <Controller
           control={form.control}
-          name='originCoin'
+          name='originCoinId'
           render={({ field: { value, onChange } }) => (
             <CurrencySelect
               value={value}
