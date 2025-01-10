@@ -16,7 +16,7 @@ export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'>;
 export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { coinList, isLoading } = useCoinList();
+  const { coinList, isLoading, error } = useCoinList();
 
   const {
     refs,
@@ -70,6 +70,11 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
             />
             <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: LIST_HEIGHT }}>
               {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
+              {error && (
+                <div className="text-red-700 text-sm text-center p-4">
+                  Too much request! Try later
+                </div>
+              )}
               <CurrencyOptions
                 coins={coinList}
                 value={value}
