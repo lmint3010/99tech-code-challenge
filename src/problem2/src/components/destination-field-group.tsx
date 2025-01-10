@@ -5,7 +5,6 @@ import debounce from 'lodash.debounce';
 import type { CurrencySwapFormFields } from '@/model/validations/currency-swap-form-schema';
 import { CurrencyInput } from '@/components/currency-input';
 import { CurrencySelect } from '@/components/currency-select';
-import { formatNumber } from '@/lib/utils/format';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
 
 export type DestinationFieldGroupProps = object;
