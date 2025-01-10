@@ -17,7 +17,7 @@ export const HomePage: FC = () => {
 						works best for you
 					</span>
 				</h1>
-				<CurrencySwapForm availableAmount={1_000_000} />
+				<CurrencySwapForm />
 			</div>
 		</div>
 	);

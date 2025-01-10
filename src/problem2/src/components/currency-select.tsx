@@ -1,55 +1,61 @@
-import { useState, type FC } from 'react';
-
-import useSWR from 'swr';
-import { useFloating, useClick, offset, shift, autoPlacement, useInteractions } from '@floating-ui/react';
-
+import { useMemo, useState, type FC } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { fetchCoinList } from '@/api/fetch-coin-list';
-import { SWR_CACHE_KEYS } from '@/constants/swr-keys';
+
 import { ChevronDown } from 'lucide-react';
-import { CurrencyOptions } from '@/components/currency-options';
+import { CurrencyOptions, type CurrencyOptionsProps } from '@/components/currency-options';
 import { CurrencyOptionsSkeleton } from '@/components/currency-options-skeleton';
+import { useCoinList } from '@/lib/hooks/use-coin-list';
+import { useFloatingConfig } from '@/lib/hooks/use-floating-configs';
 
 const VISIBLE_OPTIONS = 5.5;
 const OPTION_HEIGHT = 48;
 const LIST_HEIGHT = VISIBLE_OPTIONS * OPTION_HEIGHT;
 
-export type CurrencySelectProps = object;
+export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'>;
 
-export const CurrencySelect: FC<CurrencySelectProps> = () => {
+export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: coints, isLoading } = useSWR(
-    isOpen ? SWR_CACHE_KEYS.COIN_LIST : null,
-    fetchCoinList
+  const { coinList, isLoading } = useCoinList({ skip: !isOpen });
+
+  const selectedCoin = useMemo(
+    () => coinList?.find(
+      ({ uuid }) => uuid === value
+    ),
+    [coinList, value]
   );
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    placement: 'right-start',
-    middleware: [offset(8), shift(), autoPlacement({
-      allowedPlacements: ['right-start', 'right-end', 'right']
-    })]
-  });
+  const {
+    refs,
+    floatingStyles,
+    getReferenceProps,
+    getFloatingProps
+  } = useFloatingConfig(isOpen, setIsOpen);
 
-  const click = useClick(context);
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([click]);
-
-  const totalCoins = coints?.length ?? 0;
+  const totalCoins = coinList?.length ?? 0;
 
   return (
     <>
       <button
         type="button"
         ref={refs.setReference}
-        className="flex items-center gap-2 bg-white/60 rounded-full py-1 px-1.5 max-w-28 absolute top-3 right-3"
+        className="flex items-center gap-2 bg-white/60 rounded-full py-1 px-1.5 w-28 absolute top-3 right-3"
         {...getReferenceProps()}
       >
-        <div className="size-6 bg-gray-100 rounded-full shrink-0" />
-        <span className="max-w-[5ch] truncate grow">ANC</span>
-        <ChevronDown size={16} />
+        <div className="size-6 bg-gray-100 grid place-items-center rounded-full shrink-0">
+          {selectedCoin && (
+            <img
+              alt={selectedCoin.name}
+              src={selectedCoin.iconUrl}
+              className="size-5"
+            />
+          )}
+        </div>
+        {selectedCoin
+          ? <span className="truncate text-xs grow">{selectedCoin.symbol}</span>
+          : <span className="text-gray-400 text-xs grow">None</span>
+        }
+        <ChevronDown size={16} className="shrink-0" />
       </button>
 
       <AnimatePresence>
@@ -70,7 +76,11 @@ export const CurrencySelect: FC<CurrencySelectProps> = () => {
             />
             <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: LIST_HEIGHT }}>
               {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
-              <CurrencyOptions coins={coints} selectedId='HIVsRcGKkPFtW' />
+              <CurrencyOptions
+                coins={coinList}
+                value={value}
+                onChange={onChange}
+              />
             </div>
           </motion.div>
         )}

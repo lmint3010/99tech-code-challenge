@@ -1,7 +1,7 @@
 import { useEffect, useState, type FC } from "react";
 
-import { formatNumber } from "@/utils/format";
-import { cn } from "@/utils/cn";
+import { formatNumber } from "@/lib/utils/format";
+import { cn } from "@/lib/utils/cn";
 
 const INVALID_MASK_VALUE_CHARS = /[^0-9.,]/g;
 const NON_NUMERIC_REGEX = /[^0-9.]/g;
@@ -10,7 +10,7 @@ const NUMBER_SEPARATOR_REGEX = /[.,]/g;
 export type CurrencyInputProps = {
 	id?: string;
 	readonly?: boolean;
-	value?: number;
+	value?: number | null;
 	onChange?: (value: number) => void;
 };
 
@@ -23,7 +23,7 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({
 	const [maskValue, setMaskValue] = useState(value ? formatNumber(value) : "");
 
 	useEffect(() => {
-		if (value === undefined) {
+		if (value === undefined || value === null) {
 			return;
 		}
 

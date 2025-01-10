@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-
+import { NuqsAdapter } from 'nuqs/adapters/react';
 import { HomePage } from "@/pages/home";
 
 const container = document.getElementById("react-app");
@@ -10,4 +10,8 @@ if (!container) {
 
 const root = createRoot(container);
 
-root.render(<HomePage />);
+root.render(
+	<NuqsAdapter>
+		<HomePage />
+	</NuqsAdapter>
+);

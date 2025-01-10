@@ -1,4 +1,4 @@
-import type { Coin } from "@/types/data";
+import type { Coin } from "@/model/types/data";
 
 export async function fetchCoinList() {
 	const response = await fetch("https://api.coinranking.com/v2/coins?limit=100");

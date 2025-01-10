@@ -1,0 +1,29 @@
+import { CurrencyInput } from '@/components/currency-input';
+import { CurrencySelect } from '@/components/currency-select';
+import { formatNumber } from '@/lib/utils/format';
+import type { FC } from 'react';
+
+export type DestinationFieldGroupProps = {};
+
+export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
+  return (
+    <div className="bg-primary-backgroundLight rounded-lg py-4 px-6 flex flex-col gap-2 relative">
+      <label
+        htmlFor="output-amount"
+        className="text-sm font-medium text-indigo-700 cursor-pointer"
+      >
+        Get
+      </label>
+      <CurrencyInput id="output-amount" value={123_000} readonly />
+      <CurrencySelect value="" onChange={() => {}} />
+      <div className="flex items-center gap-1.5 text-sm">
+        <span className="text-gray-600 text-xs leading-tight">
+          Estimated Fee
+        </span>
+        <span className="font-semibold text-gray-800">
+          {formatNumber(0)}
+        </span>
+      </div>
+    </div>
+  );
+};
