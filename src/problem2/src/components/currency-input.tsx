@@ -10,6 +10,7 @@ const NUMBER_SEPARATOR_REGEX = /[.,]/g;
 export type CurrencyInputProps = {
 	id?: string;
 	readonly?: boolean;
+	placeholder?: string;
 	value?: number | null;
 	onChange?: (value: number) => void;
 };
@@ -17,6 +18,7 @@ export type CurrencyInputProps = {
 export const CurrencyInput: FC<CurrencyInputProps> = ({
 	id,
 	readonly,
+	placeholder,
 	value,
 	onChange,
 }) => {
@@ -32,7 +34,7 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({
 			const hasSeparatorInMask = NUMBER_SEPARATOR_REGEX.test(maskValue);
 
 			setMaskValue(
-				hasSeparatorInMask
+				hasSeparatorInMask || readonly
 					? formattedValue
 					: formattedValue.replace(NUMBER_SEPARATOR_REGEX, ""),
 			);
@@ -79,7 +81,7 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({
 				"outline-none placeholder:text-gray-300",
 				"tracking-wider",
 			)}
-			placeholder="Enter amount"
+			placeholder={placeholder}
 			readOnly={readonly}
 		/>
 	);

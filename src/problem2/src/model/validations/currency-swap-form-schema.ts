@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import { ERROR_MESSAGES } from "@/model/constants/messages";
 import { formatNumber } from "@/lib/utils/format";
 
 export type CurrencySwapFormFields = z.infer<
@@ -9,11 +9,21 @@ export type CurrencySwapFormFields = z.infer<
 export const getCurrencySwapFormSchema = ({ maxAmount = Number.MAX_VALUE }) =>
 	z.object({
 		originAmount: z
-			.number({ message: "Please enter a valid number" })
-			.positive({ message: "Please enter a positive value" })
+			.number({ message: ERROR_MESSAGES.INVALID_NUMBER })
+			.positive({ message: ERROR_MESSAGES.POSITIVE_NUMBER })
 			.max(maxAmount, {
-				message: `Please enter a value less than ${formatNumber(maxAmount)}`,
+				message: ERROR_MESSAGES.MAX_NUMBER.replace(
+					"{{number}}",
+					formatNumber(maxAmount),
+				),
 			}),
-		originCoinId: z.string().nonempty({ message: "Please select currency" }),
-		destinationCoinId: z.string().nonempty({ message: "Please select currency" }),
+		destinationAmount: z
+			.number({ message: ERROR_MESSAGES.INVALID_NUMBER })
+			.positive({ message: ERROR_MESSAGES.POSITIVE_NUMBER }),
+		originCoinId: z
+			.string()
+			.nonempty({ message: ERROR_MESSAGES.REQUIRE_CURRENCY }),
+		destinationCoinId: z
+			.string()
+			.nonempty({ message: ERROR_MESSAGES.REQUIRE_CURRENCY }),
 	});

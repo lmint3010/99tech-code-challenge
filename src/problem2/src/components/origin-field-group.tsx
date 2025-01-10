@@ -36,6 +36,7 @@ export const OriginFieldGroup: FC<OriginFieldGroupProps> = () => {
               <CurrencyInput
                 id={fieldId}
                 value={value}
+                placeholder='Enter amount'
                 onChange={value => onChange({ target: { value } })}
               />
               <div className="flex flex-col font-light text-sm gap-1 text-red-700">

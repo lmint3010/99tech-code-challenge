@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^19.0.4",
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.27.3",
     "@hookform/resolvers": "^3.10.0",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.469.0",
     "motion": "^11.16.3",
     "nuqs": "^2.3.0",

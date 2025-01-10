@@ -47,7 +47,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
         </div>
         {selectedCoin
           ? <span className="truncate text-xs grow">{selectedCoin.symbol}</span>
-          : <span className="text-gray-400 text-xs grow">Currency</span>
+          : <span className="text-gray-400 text-xs grow">Select</span>
         }
         <ChevronDown size={16} className="shrink-0" />
       </button>
