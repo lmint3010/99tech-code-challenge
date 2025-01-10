@@ -10,6 +10,7 @@ import { OriginFieldGroup } from "@/components/origin-field-group";
 import { DestinationFieldGroup } from "@/components/destination-field-group";
 import { useUserBalance } from "@/lib/hooks/use-user-balance";
 import { cn } from "@/lib/utils/cn";
+import { useCurrencySwapper } from "@/lib/hooks/use-currency-swapper";
 
 export type CurrencySwapFormProps = object;
 
@@ -21,6 +22,7 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 	});
 
 	const userBalance = useUserBalance();
+	const currencySwapper = useCurrencySwapper();
 
 	const form = useForm<CurrencySwapFormFields>({
 		resolver: zodResolver(
@@ -49,8 +51,11 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 	}, [watch]);
 
 	const onSubmit: SubmitHandler<CurrencySwapFormFields> = async (data) => {
-		console.log(data);
+		await currencySwapper.trigger(data);
+		// Do something next...
 	};
+
+	const destinationAmount = form.watch('destinationAmount');
 
 	return (
 		<FormProvider {...form}>
@@ -70,7 +75,17 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 					</div>
 				</div>
 				<DestinationFieldGroup />
-				<button type="submit">CONFIRM SWAP</button>
+
+				<button
+					type="submit"
+					className={cn(
+						"mt-4 bg-gradient-to-r from-indigo-500 to-indigo-700 py-3 rounded-lg text-primary-background",
+						'disabled:opacity-50 disabled:cursor-not-allowed'
+					)}
+					disabled={currencySwapper.isMutating || !destinationAmount}
+				>
+					{currencySwapper.isMutating ? 'SWAPPING...' : 'CONFIRM SWAP'}
+				</button>
 			</form>
 		</FormProvider>
 	);
