@@ -1,11 +1,11 @@
-import { useMemo, useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 
 import { ChevronDown } from 'lucide-react';
 import { CurrencyOptions, type CurrencyOptionsProps } from '@/components/currency-options';
 import { CurrencyOptionsSkeleton } from '@/components/currency-options-skeleton';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
-import { useFloatingConfig } from '@/lib/hooks/use-floating-configs';
+import { useCurrencySelectFloating } from '@/lib/hooks/use-currency-select-floating';
 
 const VISIBLE_OPTIONS = 5.5;
 const OPTION_HEIGHT = 48;
@@ -16,23 +16,17 @@ export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'>;
 export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { coinList, isLoading } = useCoinList({ skip: !isOpen });
-
-  const selectedCoin = useMemo(
-    () => coinList?.find(
-      ({ uuid }) => uuid === value
-    ),
-    [coinList, value]
-  );
+  const { coinList, isLoading } = useCoinList();
 
   const {
     refs,
     floatingStyles,
     getReferenceProps,
     getFloatingProps
-  } = useFloatingConfig(isOpen, setIsOpen);
+  } = useCurrencySelectFloating(isOpen, setIsOpen);
 
-  const totalCoins = coinList?.length ?? 0;
+  const totalCoins = coinList.length;
+  const selectedCoin = coinList.find(({ uuid }) => uuid === value);
 
   return (
     <>
@@ -53,7 +47,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
         </div>
         {selectedCoin
           ? <span className="truncate text-xs grow">{selectedCoin.symbol}</span>
-          : <span className="text-gray-400 text-xs grow">None</span>
+          : <span className="text-gray-400 text-xs grow">Currency</span>
         }
         <ChevronDown size={16} className="shrink-0" />
       </button>
@@ -63,7 +57,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
           <motion.div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="bg-white rounded-xl p-3 w-72 flex flex-col"
+            className="bg-white rounded-xl p-3 w-72 flex flex-col z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
