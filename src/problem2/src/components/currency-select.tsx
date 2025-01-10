@@ -10,12 +10,16 @@ import { ChevronDown } from 'lucide-react';
 import { CurrencyOptions } from '@/components/currency-options';
 import { CurrencyOptionsSkeleton } from '@/components/currency-options-skeleton';
 
+const VISIBLE_OPTIONS = 5.5;
+const OPTION_HEIGHT = 48;
+const LIST_HEIGHT = VISIBLE_OPTIONS * OPTION_HEIGHT;
+
 export type CurrencySelectProps = object;
 
 export const CurrencySelect: FC<CurrencySelectProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data, isLoading } = useSWR(
+  const { data: coints, isLoading } = useSWR(
     isOpen ? SWR_CACHE_KEYS.COIN_LIST : null,
     fetchCoinList
   );
@@ -33,7 +37,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = () => {
 
   const { getReferenceProps, getFloatingProps } = useInteractions([click]);
 
-  const totalCoins = data?.length ?? 0;
+  const totalCoins = coints?.length ?? 0;
 
   return (
     <>
@@ -53,7 +57,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = () => {
           <motion.div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="bg-white rounded-xl p-3 max-h-[370px] flex flex-col"
+            className="bg-white rounded-xl p-3 w-72 flex flex-col"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -64,8 +68,10 @@ export const CurrencySelect: FC<CurrencySelectProps> = () => {
               placeholder={totalCoins > 0 ? `Discover ${totalCoins} results` : 'No currencies available'}
               className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
             />
-            {isLoading && <CurrencyOptionsSkeleton />}
-            {data && <CurrencyOptions coins={data} />}
+            <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: LIST_HEIGHT }}>
+              {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
+              <CurrencyOptions coins={coints} selectedId='HIVsRcGKkPFtW' />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
