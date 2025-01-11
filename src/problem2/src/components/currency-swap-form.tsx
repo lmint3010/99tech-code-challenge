@@ -8,9 +8,9 @@ import { getCurrencySwapFormSchema, type CurrencySwapFormFields } from "@/model/
 import { OriginFieldGroup } from "@/components/origin-field-group";
 import { DestinationFieldGroup } from "@/components/destination-field-group";
 import { useUserBalance } from "@/lib/hooks/use-user-balance";
-import { cn } from "@/lib/utils/cn";
 import { useCurrencySwapper } from "@/lib/hooks/use-currency-swapper";
 import { CurrencyReverseButton } from "@/components/currency-reverse-button";
+import { AsyncButton } from "@/components/async-button";
 
 export type CurrencySwapFormProps = object;
 
@@ -70,17 +70,13 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 					/>
 				</div>
 				<DestinationFieldGroup />
-
-				<button
-					type="submit"
-					className={cn(
-						"mt-4 bg-gradient-to-r from-indigo-500 to-indigo-700 py-3 rounded-lg text-primary-background",
-						'disabled:opacity-50 disabled:cursor-not-allowed'
-					)}
-					disabled={currencySwapper.isMutating || !destinationAmount}
+				<AsyncButton
+					isLoading={currencySwapper.isMutating}
+					disabled={!destinationAmount}
+					className="mt-4"
 				>
-					{currencySwapper.isMutating ? 'SWAPPING...' : 'CONFIRM SWAP'}
-				</button>
+					{currencySwapper.isMutating ? 'SWAPPING...' : 'CONFIRM'}
+				</AsyncButton>
 			</form>
 		</FormProvider>
 	);

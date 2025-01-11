@@ -8,6 +8,9 @@ import { useCoinList } from '@/lib/hooks/use-coin-list';
 import { useCurrencySelectFloating } from '@/lib/hooks/use-currency-select-floating';
 import { filterCoinList } from '@/lib/utils/filter-coin-list';
 import { useSearchCurrency } from '@/lib/hooks/use-search-currency';
+import { CURRENCY_SELECT_CONFIG } from '@/model/constants/ui-configs';
+
+const { OPTION_HEIGHT, VISIBLE_OPTIONS } = CURRENCY_SELECT_CONFIG;
 
 export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'> & {
   omitCoinIds?: string[];
@@ -88,8 +91,11 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
               className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
               onChange={setSearchText}
             />
-            <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: CURRENCY_SELECT_CONFIG.OPTION_HEIGHT * CURRENCY_SELECT_CONFIG.VISIBLE_OPTIONS }}>
-              {isLoading && <CurrencyOptionsSkeleton fakeItems={CURRENCY_SELECT_CONFIG.VISIBLE_OPTIONS} />}
+            <div
+              className="mt-2 grow no-scrollbar overflow-y-auto"
+              style={{ height: OPTION_HEIGHT * VISIBLE_OPTIONS }}
+            >
+              {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
               {error && (
                 <div className="text-red-700 text-sm text-center p-4">
                   Too much request! Try later

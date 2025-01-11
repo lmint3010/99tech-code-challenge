@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 
+import { CURRENCY_SELECT_CONFIG } from "@/model/constants/ui-configs";
+
 export const useSearchCurrency = () => {
 	const [searchText, setSearchText] = useState("");
 
