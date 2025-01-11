@@ -29,7 +29,7 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
     if (!originCoin || !destinationCoin) return;
 
     if (!originAmount) {
-      form.reset({ destinationAmount: undefined });
+      form.resetField('destinationAmount');
       return;
     }
 
