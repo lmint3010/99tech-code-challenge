@@ -16,7 +16,7 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
   const fieldId = useId();
 
   const form = useFormContext<CurrencySwapFormFields>();
-  const { watch, formState: { errors } } = form;
+  const { watch } = form;
 
   const { coinList, isLoading } = useCoinList();
 
@@ -67,9 +67,6 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
           />
         )}
       />
-      <div className="flex flex-col font-light text-sm gap-1 text-red-700">
-        <span>{errors.destinationCoinId?.message}</span>
-      </div>
       <Controller
         control={form.control}
         name="destinationCoinId"

@@ -7,6 +7,7 @@ import { CurrencyInput } from '@/components/currency-input';
 import { formatNumber } from '@/lib/utils/format';
 import { useUserBalance } from '@/lib/hooks/use-user-balance';
 import { CurrencySelect } from '@/components/currency-select/currency-select';
+import { FormErrorMessage } from '@/components/form-error-message';
 
 export type OriginFieldGroupProps = object;
 
@@ -34,18 +35,15 @@ export const OriginFieldGroup: FC<OriginFieldGroupProps> = () => {
           control={form.control}
           name="originAmount"
           render={({ field: { value, onChange } }) => (
-            <>
+            <div className="relative">
               <CurrencyInput
                 id={fieldId}
                 value={value}
                 placeholder='Enter amount'
                 onChange={value => onChange({ target: { value } })}
               />
-              <div className="flex flex-col font-light text-sm gap-1 text-red-700">
-                <span>{errors.originAmount?.message}</span>
-                <span>{errors.originCoinId?.message}</span>
-              </div>
-            </>
+              <FormErrorMessage message={errors.originAmount?.message} />
+            </div>
           )}
         />
         <Controller
