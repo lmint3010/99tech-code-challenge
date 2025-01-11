@@ -60,6 +60,12 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
     SEARCH_TEXT_DEBOUCE_TIME_IN_MS
   );
 
+  const handleChangeSelection = (id: string) => {
+    setIsOpen(false);
+    setSearchText('');
+    onChange?.(id);
+  };
+
   const totalCoins = coinList.length;
   const selectedCoin = coinList.find(({ uuid }) => uuid === value);
 
@@ -114,7 +120,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
               <CurrencyOptions
                 coins={filteredCoinList}
                 value={value}
-                onChange={onChange}
+                onChange={handleChangeSelection}
               />
             </div>
           </motion.div>
