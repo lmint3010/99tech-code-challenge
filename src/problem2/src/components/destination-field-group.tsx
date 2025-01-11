@@ -26,9 +26,15 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
     const originCoin = coinList.find(({ uuid }) => uuid === originCoinId);
     const destinationCoin = coinList.find(({ uuid }) => uuid === destinationCoinId);
 
-    if (!originCoin || !destinationCoin || !originAmount) return;
+    if (!originCoin || !destinationCoin) return;
+
+    if (!originAmount) {
+      form.reset({ destinationAmount: undefined });
+      return;
+    }
 
     const destinationAmount = (originAmount * Number(originCoin.price)) / Number(destinationCoin.price);
+
     form.setValue('destinationAmount', destinationAmount);
   }, DEBOUNCE_DELAY);
 

@@ -30,6 +30,7 @@ export const CurrencySwapForm: FC<CurrencySwapFormProps> = () => {
 		),
 		defaultValues: {
 			originAmount: queryStates.originAmount ?? undefined,
+			destinationAmount: undefined,
 			originCoinId: queryStates.originCoinId ?? '',
 			destinationCoinId: queryStates.destinationCoinId ?? '',
 		},

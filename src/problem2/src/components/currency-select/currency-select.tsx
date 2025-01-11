@@ -12,6 +12,7 @@ import { useIsMobile } from '@/lib/hooks/use-is-mobile';
 import { Drawer, DrawerContent } from '@/components/drawer';
 import { CurrencySelectContext } from '@/components/currency-select/context';
 import { CurrencySearchList } from '@/components/currency-select/currency-search-list';
+import { cn } from '@/lib/utils/cn';
 
 export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'> & {
   value?: string | null;
@@ -54,7 +55,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds, on
       isError={Boolean(error)}
       searchText={searchText}
       onSearchTextChange={setSearchText}
-      className="p-4 pb-0"
+      className={cn(isMobile ? 'p-4 pb-0' : '')}
     />
   );
 
