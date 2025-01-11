@@ -6,6 +6,8 @@ I'm **Justin Lu**, a passionate and self-taught *ReactJS/NextJS Engineer* based 
 
 Quick tour to know more about my capabilities and experience as a Frontend Engineer 👉 [Check my portfolio here](https://justinvn.com/).
 
+<img width="1414" alt="image" src="https://github.com/user-attachments/assets/45945e0a-670c-4591-abb3-b1b64e5b530c" />
+
 # 99Tech Code Challenge
 
 I'm really excited and grateful for this interview opportunity!
