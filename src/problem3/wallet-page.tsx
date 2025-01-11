@@ -53,6 +53,18 @@ function sortByBlockchainPriority(leftBalance: WalletBalance, rightBalance: Wall
   return rightPriority - leftPriority;
 };
 
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+function formatBalances(balances: WalletBalance[]): FormattedWalletBalance[] {
+  return balances.map(
+    (balance) => {
+      return {
+        ...balance,
+        formatted: balance.amount.toFixed()
+      };
+    }
+  );
+}
+
 const WalletPage: React.FC<BoxProps> = (props) => {
   const { children, ...remainingProps } = props;
 
@@ -65,14 +77,7 @@ const WalletPage: React.FC<BoxProps> = (props) => {
       .sort(sortByBlockchainPriority);
   }, [balances]);
 
-  const formattedBalances = sortedBalances.map(
-    (balance): FormattedWalletBalance => {
-      return {
-        ...balance,
-        formatted: balance.amount.toFixed()
-      };
-    }
-  );
+  const formattedBalances = formatBalances(sortedBalances);
 
   const rows = formattedBalances.map((balance): JSX.Element => {
     const usdValue = prices[balance.currency] * balance.amount;
