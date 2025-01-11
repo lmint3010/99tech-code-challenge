@@ -79,7 +79,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
           <motion.div
             ref={refs.setFloating}
             style={floatingStyles}
-            className="bg-white rounded-xl p-3 w-72 flex flex-col z-50"
+            className="bg-white rounded-xl p-3 pb-0 w-72 flex flex-col z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -92,7 +92,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
               onChange={setSearchText}
             />
             <div
-              className="mt-2 grow no-scrollbar overflow-y-auto"
+              className="pt-2 grow no-scrollbar overflow-y-auto"
               style={{ height: OPTION_HEIGHT * VISIBLE_OPTIONS }}
             >
               {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
