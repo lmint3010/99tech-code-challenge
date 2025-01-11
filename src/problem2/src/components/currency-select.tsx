@@ -1,18 +1,13 @@
 import { useMemo, useState, type FC } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
-import debounce from 'lodash.debounce';
 
 import { CurrencyOptions, type CurrencyOptionsProps } from '@/components/currency-options';
 import { CurrencyOptionsSkeleton } from '@/components/currency-options-skeleton';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
 import { useCurrencySelectFloating } from '@/lib/hooks/use-currency-select-floating';
-
-const VISIBLE_OPTIONS = 5.5;
-const OPTION_HEIGHT = 48;
-const LIST_HEIGHT = VISIBLE_OPTIONS * OPTION_HEIGHT;
-
-const SEARCH_TEXT_DEBOUCE_TIME_IN_MS = 300;
+import { filterCoinList } from '@/lib/utils/filter-coin-list';
+import { useSearchCurrency } from '@/lib/hooks/use-search-currency';
 
 export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'> & {
   omitCoinIds?: string[];
@@ -20,7 +15,8 @@ export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'> & {
 
 export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [], onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchText, setSearchText] = useState('');
+
+  const { searchText, setSearchText, clearSearchText } = useSearchCurrency();
 
   const {
     refs,
@@ -30,42 +26,21 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
   } = useCurrencySelectFloating({
     open: isOpen,
     onOpenChange(open) {
-      if (!open) setSearchText('');
-
+      if (!open) clearSearchText();
       setIsOpen(open);
     }
   });
 
   const { coinList, isLoading, error } = useCoinList();
 
-  const filteredCoinList = useMemo(() => {
-    const lowerSearch = searchText.toLowerCase();
-
-    const matchCoins = coinList.filter(
-      ({ name, symbol, uuid }) => {
-        const lowerName = name.toLowerCase();
-        const lowerSymbol = symbol.toLowerCase();
-
-        const matchSearch = lowerName.includes(lowerSearch) || lowerSymbol.includes(lowerSearch);
-        const isOmitted = omitCoinIds.includes(uuid);
-
-        return matchSearch && !isOmitted;
-      }
-    );
-
-    return matchCoins;
-  }, [searchText, coinList, omitCoinIds]);
-
-  const handleChangeSearchText = debounce(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchText(event.target.value);
-    },
-    SEARCH_TEXT_DEBOUCE_TIME_IN_MS
+  const filteredCoinList = useMemo(
+    () => filterCoinList(coinList, searchText, omitCoinIds),
+    [searchText, coinList, omitCoinIds]
   );
 
   const handleChangeSelection = (id: string) => {
     setIsOpen(false);
-    setSearchText('');
+    clearSearchText();
     onChange?.(id);
   };
 
@@ -111,10 +86,10 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
               type="text"
               placeholder={totalCoins > 0 ? `Discover ${totalCoins} results` : 'No currencies available'}
               className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
-              onChange={handleChangeSearchText}
+              onChange={setSearchText}
             />
-            <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: LIST_HEIGHT }}>
-              {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
+            <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: CURRENCY_SELECT_CONFIG.OPTION_HEIGHT * CURRENCY_SELECT_CONFIG.VISIBLE_OPTIONS }}>
+              {isLoading && <CurrencyOptionsSkeleton fakeItems={CURRENCY_SELECT_CONFIG.VISIBLE_OPTIONS} />}
               {error && (
                 <div className="text-red-700 text-sm text-center p-4">
                   Too much request! Try later
