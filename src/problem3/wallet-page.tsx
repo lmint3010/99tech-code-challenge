@@ -26,7 +26,7 @@ enum BLOCKCHAIN_PRIORITY {
 const BLOCKCHAIN_PRIORITY_FALLBACK = -99;
 
 // Could move to a separate file - but for the sake of simplicity, I'll keep it here
-const getPriority = (blockchain: WalletBalance['blockchain']): number => {
+const getBlockchainPriority = (blockchain: WalletBalance['blockchain']): number => {
   if (blockchain in BLOCKCHAIN_PRIORITY) {
     return BLOCKCHAIN_PRIORITY[blockchain];
   }
@@ -40,21 +40,21 @@ function isValidBalance(balance: WalletBalance): boolean {
 
   if (!hasBalance) return false;
 
-  const hasValidPriority = getPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
+  const hasValidPriority = getBlockchainPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
 
   return hasValidPriority;
 }
 
 // Could move to a separate file - but for the sake of simplicity, I'll keep it here
-function sortByBlockchainPriority(lhs: WalletBalance, rhs: WalletBalance): number {
-  const leftPriority = getPriority(lhs.blockchain);
-  const rightPriority = getPriority(rhs.blockchain);
+function sortByBlockchainPriority(leftBalance: WalletBalance, rightBalance: WalletBalance): number {
+  const leftPriority = getBlockchainPriority(leftBalance.blockchain);
+  const rightPriority = getBlockchainPriority(rightBalance.blockchain);
 
   return rightPriority - leftPriority;
 };
 
 const WalletPage: React.FC<BoxProps> = (props) => {
-  const { children, ...rest } = props;
+  const { children, ...remainingProps } = props;
 
   const balances: WalletBalance[] = useWalletBalances();
   const prices: Price[] = usePrices();
@@ -91,7 +91,7 @@ const WalletPage: React.FC<BoxProps> = (props) => {
   });
 
   return (
-    <div {...rest}>
+    <div {...remainingProps}>
       {rows}
     </div>
   );
