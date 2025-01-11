@@ -9,6 +9,11 @@ interface FormattedWalletBalance extends WalletBalance {
 }
 
 // Could move to a separate file - but for the sake of simplicity, I'll keep it here
+interface Price {
+  [currency: string]: number | undefined;
+}
+
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
 enum BLOCKCHAIN_PRIORITY {
   Osmosis = 100,
   Ethereum = 50,
@@ -23,8 +28,8 @@ const BLOCKCHAIN_PRIORITY_FALLBACK = -99;
 const WalletPage: React.FC<BoxProps> = (props) => {
   const { children, ...rest } = props;
 
-  const balances = useWalletBalances();
-  const prices = usePrices();
+  const balances: WalletBalance[] = useWalletBalances();
+  const prices: Price[] = usePrices();
 
   const getPriority = (blockchain: WalletBalance['blockchain']): number => {
     if (blockchain in BLOCKCHAIN_PRIORITY) {
@@ -34,8 +39,8 @@ const WalletPage: React.FC<BoxProps> = (props) => {
     return BLOCKCHAIN_PRIORITY_FALLBACK;
   };
 
-  const sortedBalances = useMemo(() => {
-    return balances.filter((balance: WalletBalance) => {
+  const sortedBalances: WalletBalance[] = useMemo(() => {
+    return balances.filter((balance) => {
       const hasBalance = balance.amount > 0;
 
       if (!hasBalance) return false;
@@ -43,7 +48,7 @@ const WalletPage: React.FC<BoxProps> = (props) => {
       const hasValidPriority = getPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
 
       return hasValidPriority;
-    }).sort((lhs: WalletBalance, rhs: WalletBalance) => {
+    }).sort((lhs, rhs) => {
       const leftPriority = getPriority(lhs.blockchain);
       const rightPriority = getPriority(rhs.blockchain);
 
@@ -51,20 +56,22 @@ const WalletPage: React.FC<BoxProps> = (props) => {
     });
   }, [balances]);
 
-  const formattedBalances = sortedBalances.map((balance: WalletBalance) => {
-    return {
-      ...balance,
-      formatted: balance.amount.toFixed()
-    };
-  });
+  const formattedBalances = sortedBalances.map(
+    (balance): FormattedWalletBalance => {
+      return {
+        ...balance,
+        formatted: balance.amount.toFixed()
+      };
+    }
+  );
 
-  const rows = sortedBalances.map((balance: FormattedWalletBalance, index: number) => {
+  const rows = formattedBalances.map((balance, index): JSX.Element => {
     const usdValue = prices[balance.currency] * balance.amount;
 
     return (
       <WalletRow
         className={classes.row}
-        key={index}
+        key={index} // Not ideal, but we don't have a unique identifier
         amount={balance.amount}
         usdValue={usdValue}
         formattedAmount={balance.formatted}
