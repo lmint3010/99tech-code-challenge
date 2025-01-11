@@ -12,7 +12,7 @@ export type CurrencyInputProps = {
 	readonly?: boolean;
 	placeholder?: string;
 	value?: number | null;
-	onChange?: (value: number) => void;
+	onChange?: (value: number | null) => void;
 };
 
 export const CurrencyInput: FC<CurrencyInputProps> = ({
@@ -48,11 +48,13 @@ export const CurrencyInput: FC<CurrencyInputProps> = ({
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const inputValue = event.target.value;
 
-		const maskedValue = inputValue.replace(INVALID_MASK_VALUE_CHARS, "");
-		setMaskValue(maskedValue);
+		const cleanedValue = inputValue.replace(INVALID_MASK_VALUE_CHARS, "");
 
-		const numericValue = Number(maskedValue.replace(NON_NUMERIC_REGEX, ""));
-		onChange?.(numericValue);
+		setMaskValue(cleanedValue);
+
+		const numericValue = Number(cleanedValue.replace(NON_NUMERIC_REGEX, ""));
+
+		onChange?.(cleanedValue ? numericValue : null);
 	};
 
 	const handleInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
