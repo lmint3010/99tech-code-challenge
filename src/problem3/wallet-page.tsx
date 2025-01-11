@@ -36,15 +36,13 @@ const WalletPage: React.FC<BoxProps> = (props) => {
 
   const sortedBalances = useMemo(() => {
     return balances.filter((balance: WalletBalance) => {
-      const balancePriority = getPriority(balance.blockchain);
+      const hasBalance = balance.amount > 0;
 
-      if (lhsPriority > -99) {
-        if (balance.amount <= 0) {
-          return true;
-        }
-      }
+      if (!hasBalance) return false;
 
-      return false;
+      const hasValidPriority = getPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
+
+      return hasValidPriority;
     }).sort((lhs: WalletBalance, rhs: WalletBalance) => {
       const leftPriority = getPriority(lhs.blockchain);
       const rightPriority = getPriority(rhs.blockchain);
