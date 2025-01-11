@@ -8,6 +8,60 @@ The original WalletPage component had several issues:
 - Unclear code organization
 - Hard-to-maintain code structure
 
+## Refactored Code
+
+`WalletPage` component
+```typescript
+// ...Import statements
+
+export const WalletPage: React.FC<BoxProps> = ({ children, ...remainingProps }) => {
+  const balances = useWalletBalances();
+
+  const sortedBalances: WalletBalance[] = useMemo(() => {
+    return balances
+      .filter(isValidBalance)
+      .sort(sortByBlockchainPriority);
+  }, [balances]);
+
+  return (
+    <div {...remainingProps}>
+      <BalanceRows balances={sortedBalances} />
+    </div>
+  );
+}
+```
+
+`BalanceRows` component
+```typescript
+// ...Import statements
+
+export interface BalanceRowsProps {
+  balances: WalletBalance[];
+};
+
+export const BalanceRows: FC<BalanceRowsProps> = ({ balances }) => {
+  const formattedBalances = formatBalances(balances);
+
+  const prices = usePrices();
+
+  return formattedBalances.map((balance) => {
+    const usdValue = (prices[balance.currency] ?? 0) * balance.amount;
+
+    const uniqueKey = `${balance.blockchain}-${balance.currency}-${balance.amount}`;
+
+    return (
+      <WalletRow
+        className={classes.row}
+        key={uniqueKey}
+        amount={balance.amount}
+        usdValue={usdValue}
+        formattedAmount={balance.formatted}
+      />
+    );
+  });
+};
+```
+
 ## Refactoring Steps
 
 ### 1. Extract Type Definitions
