@@ -34,13 +34,13 @@ export const CurrencySearchList: FC<CurrencySearchListProps> = ({
     [searchText, coins, omitCoinIds]
   );
 
-  const totalCoins = coins.length;
+  const resultCount = filteredCoinList.length;
 
   return (
     <div className={cn(className)}>
       <input
         type="text"
-        placeholder={totalCoins > 0 ? `Type to search in ${totalCoins} results` : 'No currencies available'}
+        placeholder={resultCount > 0 ? `Type to search in ${resultCount} results` : 'No currencies available'}
         className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
         onChange={onSearchTextChange}
       />
