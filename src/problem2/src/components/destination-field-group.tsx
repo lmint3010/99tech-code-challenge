@@ -6,6 +6,7 @@ import type { CurrencySwapFormFields } from '@/model/validations/currency-swap-f
 import { CurrencyInput } from '@/components/currency-input';
 import { CurrencySelect } from '@/components/currency-select';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
+import { EXTERNAL_URLS } from '@/model/constants/external-urls';
 
 export type DestinationFieldGroupProps = object;
 
@@ -75,7 +76,16 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
         )}
       />
       <div className="text-xs font-medium text-gray-800 leading-tight">
-        No transfer fee for <span className="text-indigo-700">Diamond</span> members
+        No transfer fee for
+        <a
+          href={EXTERNAL_URLS.DIAMOND_MEMBERSHIP}
+          target='_blank'
+          rel="noreferrer"
+          className="text-indigo-700 underline px-1"
+        >
+          Diamond
+        </a>
+        members
       </div>
     </div>
   );

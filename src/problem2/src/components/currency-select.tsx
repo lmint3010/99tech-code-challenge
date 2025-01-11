@@ -87,7 +87,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [
           >
             <input
               type="text"
-              placeholder={totalCoins > 0 ? `Discover ${totalCoins} results` : 'No currencies available'}
+              placeholder={totalCoins > 0 ? `Type to search in ${totalCoins} results` : 'No currencies available'}
               className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
               onChange={setSearchText}
             />
