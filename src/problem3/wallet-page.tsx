@@ -8,6 +8,18 @@ interface FormattedWalletBalance extends WalletBalance {
   formatted: string;
 }
 
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+enum BLOCKCHAIN_PRIORITY {
+  Osmosis = 100,
+  Ethereum = 50,
+  Arbitrum = 30,
+  Zilliqa = 20,
+  Neo = 20,
+}
+
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+const BLOCKCHAIN_PRIORITY_FALLBACK = -99;
+
 const WalletPage: React.FC<BoxProps> = (props) => {
   const { children, ...rest } = props;
 
@@ -15,20 +27,11 @@ const WalletPage: React.FC<BoxProps> = (props) => {
   const prices = usePrices();
 
   const getPriority = (blockchain: WalletBalance['blockchain']): number => {
-    switch (blockchain) {
-      case 'Osmosis':
-        return 100
-      case 'Ethereum':
-        return 50
-      case 'Arbitrum':
-        return 30
-      case 'Zilliqa':
-        return 20
-      case 'Neo':
-        return 20
-      default:
-        return -99
+    if (blockchain in BLOCKCHAIN_PRIORITY) {
+      return BLOCKCHAIN_PRIORITY[blockchain];
     }
+
+    return BLOCKCHAIN_PRIORITY_FALLBACK;
   };
 
   const sortedBalances = useMemo(() => {
