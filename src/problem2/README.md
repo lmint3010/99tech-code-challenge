@@ -1,4 +1,6 @@
-## Setup checklist
+Live URL: https://99tech-code-challenge-rho.vercel.app/
+
+## Setup Checklist
 - [x] Use Vite as build tool
 - [x] Use TailwindCSS with PostCSS for styling
 - [x] Support TypeScript
@@ -21,7 +23,7 @@
 - [x] Button loading and disable while submitting form
 - [x] Shareable URL
 
-## Used Libraries
+## Used Packages
 - [x] `@floating-ui/react`: Headless smart calculate floating element such as Tooltip, Popover...
 - [x] `@hookform/resolvers`: React hook form schema validation resolver.
 - [x] `@uidotdev/usehooks`: React hooks as utils library.
