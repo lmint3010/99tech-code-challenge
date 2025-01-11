@@ -41,6 +41,8 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
     return () => unsubscribe();
   }, [watch, coinList]);
 
+  const originCoinId = watch('originCoinId');
+
   return (
     <div className="bg-primary-backgroundLight rounded-lg py-4 px-6 flex flex-col gap-2 relative">
       <label htmlFor={fieldId} className="text-sm font-medium text-indigo-700 cursor-pointer">
@@ -65,7 +67,11 @@ export const DestinationFieldGroup: FC<DestinationFieldGroupProps> = () => {
         control={form.control}
         name="destinationCoinId"
         render={({ field: { value, onChange } }) => (
-          <CurrencySelect value={value} onChange={onChange} />
+          <CurrencySelect
+            value={value}
+            onChange={onChange}
+            omitCoinIds={[originCoinId]}
+          />
         )}
       />
       <div className="text-xs font-medium text-gray-800 leading-tight">

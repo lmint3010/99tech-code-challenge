@@ -14,9 +14,11 @@ const LIST_HEIGHT = VISIBLE_OPTIONS * OPTION_HEIGHT;
 
 const SEARCH_TEXT_DEBOUCE_TIME_IN_MS = 300;
 
-export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'>;
+export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'> & {
+  omitCoinIds?: string[];
+};
 
-export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => {
+export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds = [], onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -37,21 +39,22 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
   const { coinList, isLoading, error } = useCoinList();
 
   const filteredCoinList = useMemo(() => {
-    if (!searchText) return coinList;
-
     const lowerSearch = searchText.toLowerCase();
 
     const matchCoins = coinList.filter(
-      ({ name, symbol }) => {
+      ({ name, symbol, uuid }) => {
         const lowerName = name.toLowerCase();
         const lowerSymbol = symbol.toLowerCase();
 
-        return lowerName.includes(lowerSearch) || lowerSymbol.includes(lowerSearch);
+        const matchSearch = lowerName.includes(lowerSearch) || lowerSymbol.includes(lowerSearch);
+        const isOmitted = omitCoinIds.includes(uuid);
+
+        return matchSearch && !isOmitted;
       }
     );
 
     return matchCoins;
-  }, [searchText, coinList]);
+  }, [searchText, coinList, omitCoinIds]);
 
   const handleChangeSearchText = debounce(
     (event: React.ChangeEvent<HTMLInputElement>) => {

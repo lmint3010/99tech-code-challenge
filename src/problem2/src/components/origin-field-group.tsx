@@ -19,6 +19,8 @@ export const OriginFieldGroup: FC<OriginFieldGroupProps> = () => {
 
   const { errors } = form.formState;
 
+  const destinationCoinId = form.watch('destinationCoinId');
+
   return (
     <>
       <div className="bg-primary-backgroundLight rounded-lg py-4 px-6 flex flex-col gap-2 relative">
@@ -53,6 +55,7 @@ export const OriginFieldGroup: FC<OriginFieldGroupProps> = () => {
             <CurrencySelect
               value={value}
               onChange={value => onChange({ target: { value } })}
+              omitCoinIds={[destinationCoinId]}
             />
           )}
         />
