@@ -17,7 +17,7 @@ const isNotOmitted = (coin: Coin, omitCoinIds: string[]): boolean => {
 export const filterCoinList = (
 	coinList: Coin[],
 	searchText: string,
-	omitCoinIds: string[],
+	omitCoinIds: string[] = [],
 ): Coin[] => {
 	return coinList.filter(
 		(coin) =>

@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 
 import type { CurrencySwapFormFields } from '@/model/validations/currency-swap-form-schema';
 import { CurrencyInput } from '@/components/currency-input';
-import { CurrencySelect } from '@/components/currency-select';
+import { CurrencySelect } from '@/components/currency-select/currency-select';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
 import { EXTERNAL_URLS } from '@/model/constants/external-urls';
 

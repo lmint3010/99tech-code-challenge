@@ -6,7 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CurrencyInput } from '@/components/currency-input';
 import { formatNumber } from '@/lib/utils/format';
 import { useUserBalance } from '@/lib/hooks/use-user-balance';
-import { CurrencySelect } from '@/components/currency-select';
+import { CurrencySelect } from '@/components/currency-select/currency-select';
 
 export type OriginFieldGroupProps = object;
 

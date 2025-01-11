@@ -1,18 +1,17 @@
-import type { FC } from 'react';
+import { useContext, type FC } from 'react';
 import type { Coin } from '@/model/types/data';
 
 import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import { CurrencySelectContext } from '@/components/currency-select/context';
 
-export type CurrencyOptionsProps = {
-  coins: Coin[] | undefined;
-  value?: string | null;
-  onChange?: (id: string) => void;
-};
+export type CurrencyOptionsProps = { coins: Coin[] };
 
-export const CurrencyOptions: FC<CurrencyOptionsProps> = ({ coins = [], value, onChange }) => {
+export const CurrencyOptions: FC<CurrencyOptionsProps> = ({ coins = [] }) => {
+  const { value, onChange } = useContext(CurrencySelectContext);
+
   const handleSelectOption = (id: string) => {
-    if (onChange) onChange(id);
+    onChange?.(id);
   }
 
   const renderCoinOption = (coin: Coin) => {
