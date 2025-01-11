@@ -65,13 +65,15 @@ const WalletPage: React.FC<BoxProps> = (props) => {
     }
   );
 
-  const rows = formattedBalances.map((balance, index): JSX.Element => {
+  const rows = formattedBalances.map((balance): JSX.Element => {
     const usdValue = prices[balance.currency] * balance.amount;
+
+    const uniqueKey = `${balance.blockchain}-${balance.currency}-${balance.amount}`;
 
     return (
       <WalletRow
         className={classes.row}
-        key={index} // Not ideal, but we don't have a unique identifier
+        key={uniqueKey}
         amount={balance.amount}
         usdValue={usdValue}
         formattedAmount={balance.formatted}
