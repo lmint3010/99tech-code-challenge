@@ -45,7 +45,7 @@ interface FormattedWalletBalance extends WalletBalance {
 - Created `BLOCKCHAIN_PRIORITY` enum
 - Defined `BLOCKCHAIN_PRIORITY_FALLBACK`
 - Replaced switch statement with enum usage
-```typesscript
+```typescript
 // BEFORE
 const getPriority = (blockchain: WalletBalance['blockchain']): number => {
     switch (blockchain) {
