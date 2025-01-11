@@ -1,7 +1,8 @@
-import { useState, type FC } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-
 import { ChevronDown } from 'lucide-react';
+import debounce from 'lodash.debounce';
+
 import { CurrencyOptions, type CurrencyOptionsProps } from '@/components/currency-options';
 import { CurrencyOptionsSkeleton } from '@/components/currency-options-skeleton';
 import { useCoinList } from '@/lib/hooks/use-coin-list';
@@ -11,19 +12,53 @@ const VISIBLE_OPTIONS = 5.5;
 const OPTION_HEIGHT = 48;
 const LIST_HEIGHT = VISIBLE_OPTIONS * OPTION_HEIGHT;
 
+const SEARCH_TEXT_DEBOUCE_TIME_IN_MS = 300;
+
 export type CurrencySelectProps = Omit<CurrencyOptionsProps, 'coins'>;
 
 export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { coinList, isLoading, error } = useCoinList();
+  const [searchText, setSearchText] = useState('');
 
   const {
     refs,
     floatingStyles,
     getReferenceProps,
     getFloatingProps
-  } = useCurrencySelectFloating(isOpen, setIsOpen);
+  } = useCurrencySelectFloating({
+    open: isOpen,
+    onOpenChange(open) {
+      if (!open) setSearchText('');
+
+      setIsOpen(open);
+    }
+  });
+
+  const { coinList, isLoading, error } = useCoinList();
+
+  const filteredCoinList = useMemo(() => {
+    if (!searchText) return coinList;
+
+    const lowerSearch = searchText.toLowerCase();
+
+    const matchCoins = coinList.filter(
+      ({ name, symbol }) => {
+        const lowerName = name.toLowerCase();
+        const lowerSymbol = symbol.toLowerCase();
+
+        return lowerName.includes(lowerSearch) || lowerSymbol.includes(lowerSearch);
+      }
+    );
+
+    return matchCoins;
+  }, [searchText, coinList]);
+
+  const handleChangeSearchText = debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchText(event.target.value);
+    },
+    SEARCH_TEXT_DEBOUCE_TIME_IN_MS
+  );
 
   const totalCoins = coinList.length;
   const selectedCoin = coinList.find(({ uuid }) => uuid === value);
@@ -67,6 +102,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
               type="text"
               placeholder={totalCoins > 0 ? `Discover ${totalCoins} results` : 'No currencies available'}
               className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
+              onChange={handleChangeSearchText}
             />
             <div className="mt-2 grow no-scrollbar overflow-y-auto" style={{ height: LIST_HEIGHT }}>
               {isLoading && <CurrencyOptionsSkeleton fakeItems={VISIBLE_OPTIONS} />}
@@ -76,7 +112,7 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, onChange }) => 
                 </div>
               )}
               <CurrencyOptions
-                coins={coinList}
+                coins={filteredCoinList}
                 value={value}
                 onChange={onChange}
               />

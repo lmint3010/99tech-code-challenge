@@ -6,21 +6,19 @@ import {
 	useClick,
 	useDismiss,
 	useInteractions,
+	type UseFloatingOptions,
 } from "@floating-ui/react";
 
-export const useCurrencySelectFloating = (
-	isOpen: boolean,
-	setIsOpen: (open: boolean) => void,
-) => {
+export const useCurrencySelectFloating = (options: UseFloatingOptions) => {
 	const { refs, floatingStyles, context } = useFloating({
-		open: isOpen,
-		onOpenChange: setIsOpen,
+		...options,
 		middleware: [
 			offset(8),
 			shift(),
 			autoPlacement({
 				allowedPlacements: ["right-start", "right-end", "right"],
 			}),
+			...(options.middleware ?? []),
 		],
 	});
 
