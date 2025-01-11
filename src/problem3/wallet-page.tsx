@@ -25,35 +25,44 @@ enum BLOCKCHAIN_PRIORITY {
 // Could move to a separate file - but for the sake of simplicity, I'll keep it here
 const BLOCKCHAIN_PRIORITY_FALLBACK = -99;
 
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+const getPriority = (blockchain: WalletBalance['blockchain']): number => {
+  if (blockchain in BLOCKCHAIN_PRIORITY) {
+    return BLOCKCHAIN_PRIORITY[blockchain];
+  }
+
+  return BLOCKCHAIN_PRIORITY_FALLBACK;
+};
+
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+function isValidBalance(balance: WalletBalance): boolean {
+  const hasBalance = balance.amount > 0;
+
+  if (!hasBalance) return false;
+
+  const hasValidPriority = getPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
+
+  return hasValidPriority;
+}
+
+// Could move to a separate file - but for the sake of simplicity, I'll keep it here
+function sortByBlockchainPriority(lhs: WalletBalance, rhs: WalletBalance): number {
+  const leftPriority = getPriority(lhs.blockchain);
+  const rightPriority = getPriority(rhs.blockchain);
+
+  return rightPriority - leftPriority;
+};
+
 const WalletPage: React.FC<BoxProps> = (props) => {
   const { children, ...rest } = props;
 
   const balances: WalletBalance[] = useWalletBalances();
   const prices: Price[] = usePrices();
 
-  const getPriority = (blockchain: WalletBalance['blockchain']): number => {
-    if (blockchain in BLOCKCHAIN_PRIORITY) {
-      return BLOCKCHAIN_PRIORITY[blockchain];
-    }
-
-    return BLOCKCHAIN_PRIORITY_FALLBACK;
-  };
-
   const sortedBalances: WalletBalance[] = useMemo(() => {
-    return balances.filter((balance) => {
-      const hasBalance = balance.amount > 0;
-
-      if (!hasBalance) return false;
-
-      const hasValidPriority = getPriority(balance.blockchain) !== BLOCKCHAIN_PRIORITY_FALLBACK;
-
-      return hasValidPriority;
-    }).sort((lhs, rhs) => {
-      const leftPriority = getPriority(lhs.blockchain);
-      const rightPriority = getPriority(rhs.blockchain);
-
-      return rightPriority - leftPriority;
-    });
+    return balances
+      .filter(isValidBalance)
+      .sort(sortByBlockchainPriority);
   }, [balances]);
 
   const formattedBalances = sortedBalances.map(
