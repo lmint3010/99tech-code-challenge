@@ -1,10 +1,19 @@
-# 99Tech Code Challenge #1 #
+# Introduction 
 
-Note that if you fork this repository, your responses may be publicly linked to this repo.  
-Please submit your application along with the solutions attached or linked.   
+Hi there!
 
-It is important that you minimally attempt the problems, even if you do not arrive at a working solution.
+I'm **Justin Lu**, a passionate and self-taught *ReactJS/NextJS Engineer* based in Vietnam.
 
-## Submission ##
-You can either provide a link to an online repository, attach the solution in your application, or whichever method you prefer.
-We're cool as long as we can view your solution without any pain.
+Quick tour to know more about my capabilities and experience as a Frontend Engineer 👉 [Check my portfolio here](https://justinvn.com/).
+
+# 99Tech Code Challenge
+
+I'm really excited and grateful for this interview opportunity!
+Thank you for considering my application.
+
+As an Frontend Engineer, I've chosen to tackle 3 problems from the provided task list. 
+For each solution, I've included detailed documentation in separate Markdown files at the root directory to showcase my approach and implementation.
+
+If you have any concerns or questions, feel free to add the discussion here or directly mail to me via [jeonkyosin@gmail.com](mailto:jeonkyosin@gmail.com)
+
+Have a nice day!!!
