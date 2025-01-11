@@ -35,7 +35,10 @@ export const CurrencySelect: FC<CurrencySelectProps> = ({ value, omitCoinIds, on
   } = useCurrencySelectFloating({
     open: isOpen,
     onOpenChange(open) {
+      if (isMobile) return;
+
       if (!open) clearSearchText();
+
       setIsOpen(open);
     }
   });

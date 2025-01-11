@@ -41,7 +41,7 @@ export const CurrencySearchList: FC<CurrencySearchListProps> = ({
       <input
         type="text"
         placeholder={resultCount > 0 ? `Type to search in ${resultCount} results` : 'No currencies available'}
-        className="w-full h-10 border border-gray-300 rounded-md px-3 shrink-0"
+        className="w-full h-11 border border-gray-200/80 rounded-xl px-3 shrink-0"
         onChange={onSearchTextChange}
       />
       <div
