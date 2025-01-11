@@ -1,26 +1,20 @@
 interface WalletBalance {
   currency: string;
   amount: number;
+  blockchain: string;
 }
 
-interface FormattedWalletBalance {
-  currency: string;
-  amount: number;
+interface FormattedWalletBalance extends WalletBalance {
   formatted: string;
 }
 
-interface Props extends BoxProps {
-
-}
-
-const WalletPage: React.FC<Props> = (props: Props) => {
+const WalletPage: React.FC<BoxProps> = (props) => {
   const { children, ...rest } = props;
 
   const balances = useWalletBalances();
-
   const prices = usePrices();
 
-  const getPriority = (blockchain: any): number => {
+  const getPriority = (blockchain: WalletBalance['blockchain']): number => {
     switch (blockchain) {
       case 'Osmosis':
         return 100
