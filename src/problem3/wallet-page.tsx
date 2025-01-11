@@ -47,13 +47,9 @@ const WalletPage: React.FC<BoxProps> = (props) => {
       const leftPriority = getPriority(lhs.blockchain);
       const rightPriority = getPriority(rhs.blockchain);
 
-      if (leftPriority > rightPriority) {
-        return -1;
-      } else if (rightPriority > leftPriority) {
-        return 1;
-      }
+      return rightPriority - leftPriority;
     });
-  }, [balances, prices]);
+  }, [balances]);
 
   const formattedBalances = sortedBalances.map((balance: WalletBalance) => {
     return {
