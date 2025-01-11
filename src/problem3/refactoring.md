@@ -12,10 +12,12 @@ The original WalletPage component had several issues:
 
 ### 1. Extract Type Definitions
 **What:** Moved all interfaces to a dedicated types.ts file
+
 **Why:** 
 - Centralize type definitions
 - Make types reusable across components
 - Improve type maintenance
+
 **Changes:**
 - Added missing `blockchain` property in `WalletBalance` interface
 - Extend `FormattedWalletBalance` interface instead of repeat property (single source of truth)
@@ -37,10 +39,12 @@ interface FormattedWalletBalance extends WalletBalance {
 
 ### 2. Create Constants File
 **What:** Extracted magic values into constants.ts
+
 **Why:**
 - Remove hard-coded values
 - Make priorities maintainable
 - Prevent typos and errors
+
 **Changes:**
 - Created `BLOCKCHAIN_PRIORITY` enum
 - Defined `BLOCKCHAIN_PRIORITY_FALLBACK`
@@ -62,11 +66,13 @@ enum BLOCKCHAIN_PRIORITY {
 
 ### 3. Implement Utility Functions
 **What:** Created utils.ts for pure functions
+
 **Why:**
 - Separate business logic
 - Avoiding re-creating during renders
 - Make functions testable
 - Improve code reuse
+
 **Changes:**
 - Extracted `getBlockchainPriority` function
 - Extracted `isValidBalance` with more proper validation applied.
@@ -77,10 +83,12 @@ enum BLOCKCHAIN_PRIORITY {
 
 ### 4. Component Separation
 **What:** Split WalletPage into smaller components
+
 **Why:**
 - Single responsibility principle
 - Improve code readability
 - Better component reuse
+
 **Changes:**
 - Created `BalanceRows` component
 - Moved row rendering logic into `BalanceRows` component.
@@ -88,10 +96,12 @@ enum BLOCKCHAIN_PRIORITY {
 
 ### 5. Performance Optimization
 **What:** Added proper memoization and key handling
+
 **Why:**
 - Prevent unnecessary re-renders
 - Improve list rendering
 - Better React reconciliation
+
 **Changes:**
 - Removed unused `prices` dependency from useMemo of `sortedBalances` function.
 - Added unique key generation logic.
@@ -100,10 +110,12 @@ enum BLOCKCHAIN_PRIORITY {
 
 ### 6. Code Quality Improvements
 **What:** Enhanced code style and patterns
+
 **Why:**
 - Better maintainability
 - Easier to understand
 - Reduced bugs
+
 **Changes:**
 - Consistent naming conventions
 - Improve naming of some unclear variables
